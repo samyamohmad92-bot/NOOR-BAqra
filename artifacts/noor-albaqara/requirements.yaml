@@ -1,0 +1,21 @@
+packages:
+  "zustand": "State management for user session and auth"
+  "framer-motion": "For smooth page transitions and beautiful modal animations"
+  "lucide-react": "Beautiful icons for the UI"
+  "clsx": "Utility for conditionally joining classNames"
+  "tailwind-merge": "Utility for merging tailwind classes without conflicts"
+  "date-fns": "For formatting dates in dashboards"
+
+images:
+  - path: "artifacts/noor-albaqara/public/images/islamic-pattern.png"
+    description: "Subtle dark green Islamic geometric seamless pattern background, premium elegant texture, very low opacity"
+    aspect_ratio: "16:9"
+  - path: "artifacts/noor-albaqara/public/images/quran-hero.png"
+    description: "A beautiful cinematic shot of the Holy Quran open on a wooden rehal (stand) with soft warm lighting and dark emerald green background, premium aesthetic"
+    aspect_ratio: "16:9"
+
+notes:
+  - App is fully RTL (Arabic). Set dir="rtl" on main container.
+  - Using Tajawal for UI text and Amiri for Quranic text.
+  - Using Zustand with localStorage persistence for simple session state (since there's no complex cookie setup in this stub).
+  - React hooks are imported from @workspace/api-client-react as instructed.

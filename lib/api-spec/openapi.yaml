@@ -1,22 +1,30 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: نور البقرة API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication
+  - name: students
+    description: Student management
+  - name: supervisors
+    description: Supervisor management
+  - name: progress
+    description: Student progress
+  - name: leaderboard
+    description: Leaderboard
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +32,314 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/student/login:
+    post:
+      operationId: studentLogin
+      tags: [auth]
+      summary: Student login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentWithProgress"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/student/register:
+    post:
+      operationId: studentRegister
+      tags: [auth]
+      summary: Register a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterStudentRequest"
+      responses:
+        "200":
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentWithProgress"
+        "400":
+          description: Phone already registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/supervisor/login:
+    post:
+      operationId: supervisorLogin
+      tags: [auth]
+      summary: Supervisor login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupervisorLoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/admin/login:
+    post:
+      operationId: adminLogin
+      tags: [auth]
+      summary: Admin login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminLoginResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /students:
+    get:
+      operationId: getStudents
+      tags: [students]
+      summary: Get all students
+      responses:
+        "200":
+          description: List of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudentWithProgress"
+
+  /students/{id}:
+    get:
+      operationId: getStudent
+      tags: [students]
+      summary: Get student by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Student found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentWithProgress"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateStudent
+      tags: [students]
+      summary: Update a student
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateStudentRequest"
+      responses:
+        "200":
+          description: Updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+    delete:
+      operationId: deleteStudent
+      tags: [students]
+      summary: Delete a student
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /students/{id}/reset-password:
+    post:
+      operationId: resetStudentPassword
+      tags: [students]
+      summary: Reset student password
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: New password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResetPasswordResponse"
+
+  /progress/{studentId}:
+    get:
+      operationId: getProgress
+      tags: [progress]
+      summary: Get student progress
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Progress data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentProgress"
+    patch:
+      operationId: updateProgress
+      tags: [progress]
+      summary: Update student progress
+      parameters:
+        - name: studentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProgressRequest"
+      responses:
+        "200":
+          description: Updated progress
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudentProgress"
+
+  /leaderboard:
+    get:
+      operationId: getLeaderboard
+      tags: [leaderboard]
+      summary: Get top students by stars
+      responses:
+        "200":
+          description: Top students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LeaderboardEntry"
+
+  /supervisors:
+    get:
+      operationId: getSupervisors
+      tags: [supervisors]
+      summary: Get all supervisors
+      responses:
+        "200":
+          description: List of supervisors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Supervisor"
+    post:
+      operationId: createSupervisor
+      tags: [supervisors]
+      summary: Create a supervisor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSupervisorRequest"
+      responses:
+        "200":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supervisor"
+
+  /supervisors/{id}:
+    delete:
+      operationId: deleteSupervisor
+      tags: [supervisors]
+      summary: Delete a supervisor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +350,273 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+        - success
+
+    LoginRequest:
+      type: object
+      properties:
+        phone:
+          type: string
+        password:
+          type: string
+      required:
+        - phone
+        - password
+
+    RegisterStudentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        country:
+          type: string
+        gender:
+          type: string
+        tajweedLevel:
+          type: string
+      required:
+        - name
+        - phone
+        - password
+
+    UpdateStudentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+        country:
+          type: string
+        gender:
+          type: string
+        tajweedLevel:
+          type: string
+
+    CreateSupervisorRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - phone
+        - password
+
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        country:
+          type: string
+        gender:
+          type: string
+        tajweedLevel:
+          type: string
+        supervisorId:
+          type: integer
+          nullable: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - phone
+        - createdAt
+
+    StudentProgress:
+      type: object
+      properties:
+        id:
+          type: integer
+        studentId:
+          type: integer
+        currentWajh:
+          type: integer
+        correctCount:
+          type: integer
+        currentSession:
+          type: integer
+        totalStars:
+          type: integer
+        waitingTeacher:
+          type: boolean
+        testAttempts:
+          type: object
+        hashdCompleted:
+          type: integer
+        updatedAt:
+          type: string
+      required:
+        - id
+        - studentId
+        - currentWajh
+        - correctCount
+        - currentSession
+        - totalStars
+        - waitingTeacher
+        - hashdCompleted
+
+    UpdateProgressRequest:
+      type: object
+      properties:
+        currentWajh:
+          type: integer
+        correctCount:
+          type: integer
+        currentSession:
+          type: integer
+        totalStars:
+          type: integer
+        waitingTeacher:
+          type: boolean
+        testAttempts:
+          type: object
+        hashdCompleted:
+          type: integer
+
+    StudentWithProgress:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        country:
+          type: string
+        gender:
+          type: string
+        tajweedLevel:
+          type: string
+        supervisorId:
+          type: integer
+          nullable: true
+        createdAt:
+          type: string
+        progress:
+          $ref: "#/components/schemas/StudentProgress"
+      required:
+        - id
+        - name
+        - phone
+        - createdAt
+
+    LeaderboardEntry:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        totalStars:
+          type: integer
+        currentWajh:
+          type: integer
+        rank:
+          type: integer
+      required:
+        - id
+        - name
+        - totalStars
+        - currentWajh
+        - rank
+
+    Supervisor:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        studentCount:
+          type: integer
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - phone
+        - studentCount
+        - createdAt
+
+    SupervisorLoginResponse:
+      type: object
+      properties:
+        supervisor:
+          $ref: "#/components/schemas/Supervisor"
+        students:
+          type: array
+          items:
+            $ref: "#/components/schemas/StudentWithProgress"
+      required:
+        - supervisor
+        - students
+
+    AdminLoginResponse:
+      type: object
+      properties:
+        role:
+          type: string
+        stats:
+          $ref: "#/components/schemas/AdminStats"
+      required:
+        - role
+        - stats
+
+    AdminStats:
+      type: object
+      properties:
+        totalStudents:
+          type: integer
+        activeStudents:
+          type: integer
+        totalSupervisors:
+          type: integer
+        totalStars:
+          type: integer
+      required:
+        - totalStudents
+        - activeStudents
+        - totalSupervisors
+        - totalStars
+
+    ResetPasswordResponse:
+      type: object
+      properties:
+        newPassword:
+          type: string
+      required:
+        - newPassword
