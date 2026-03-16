@@ -33,8 +33,8 @@ export default function StudentDashboard() {
   const currentSession = progress?.currentSession || 1;
   const totalStars = progress?.totalStars || 0;
   const hashdCompleted = progress?.hashdCompleted || 0;
+  const waitingTeacher = progress?.waitingTeacher || false;
   const maxAttempts = 8;
-  const maxSessions = 3;
 
   const progressPercent = Math.round((correctCount / maxAttempts) * 100);
 
@@ -105,28 +105,46 @@ export default function StudentDashboard() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
-                <div className="flex items-center gap-3 bg-background/50 py-2 px-4 rounded-xl border border-white/5">
-                  <span className="text-sm font-medium text-muted-foreground ml-2">الجلسات المتاحة:</span>
-                  {[1, 2, 3].map(s => (
-                    <div 
-                      key={s} 
-                      className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all
-                        ${s < currentSession ? 'bg-primary/20 text-primary border border-primary/30' : 
-                          s === currentSession ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30 scale-110' : 
-                          'bg-white/5 text-muted-foreground border border-white/5'}`}
-                    >
-                      {s}
-                    </div>
-                  ))}
-                </div>
+                {!waitingTeacher && (
+                  <div className="flex items-center gap-3 bg-background/50 py-2 px-4 rounded-xl border border-white/5">
+                    <span className="text-sm font-medium text-muted-foreground ml-2">الجلسات المتاحة:</span>
+                    {[1, 2, 3].map(s => (
+                      <div
+                        key={s}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all
+                          ${s < currentSession ? 'bg-primary/20 text-primary border border-primary/30' :
+                            s === currentSession ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30 scale-110' :
+                            'bg-white/5 text-muted-foreground border border-white/5'}`}
+                      >
+                        {s}
+                      </div>
+                    ))}
+                  </div>
+                )}
 
-                <button 
-                  onClick={startSession}
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-lg bg-gradient-to-r from-primary to-emerald-700 text-white shadow-xl shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-3"
-                >
-                  <PlayCircle className="w-6 h-6" />
-                  ابدأ التسميع الآن
-                </button>
+                {waitingTeacher ? (
+                  <div className="w-full flex flex-col items-center gap-3">
+                    <div className="w-full py-4 px-6 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 font-bold text-center flex items-center justify-center gap-3">
+                      ⏳ في انتظار التسميع على المعلم للوجه {currentWajh}
+                    </div>
+                    <p className="text-xs text-muted-foreground">بعد التسميع على المعلم، اضغط "سمّعت على المعلم" في صفحة التسميع للانتقال للوجه التالي.</p>
+                    <button
+                      onClick={startSession}
+                      className="w-full sm:w-auto px-6 py-3 rounded-xl font-semibold text-sm bg-white/5 border border-white/10 text-muted-foreground hover:text-white hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+                    >
+                      <PlayCircle className="w-5 h-5" />
+                      الذهاب لصفحة التسميع
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={startSession}
+                    className="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-lg bg-gradient-to-r from-primary to-emerald-700 text-white shadow-xl shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1 active:translate-y-0 transition-all flex items-center justify-center gap-3"
+                  >
+                    <PlayCircle className="w-6 h-6" />
+                    ابدأ التسميع الآن
+                  </button>
+                )}
               </div>
             </div>
           </div>
