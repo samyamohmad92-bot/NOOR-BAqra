@@ -33,6 +33,12 @@ export default function AuthPage() {
 
   const [errorMsg, setErrorMsg] = useState("");
 
+  // مسح الحقول عند تغيير الوضع
+  useEffect(() => {
+    setFormData(f => ({ ...f, phone: "", password: "" }));
+    setErrorMsg("");
+  }, [mode]);
+
   const studentLoginMut = useStudentLogin();
   const studentRegMut = useStudentRegister();
   const supervisorMut = useSupervisorLogin();
@@ -148,17 +154,19 @@ export default function AuthPage() {
               )}
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-emerald-100/80 ml-1">رقم الهاتف</label>
+                <label className="text-sm font-medium text-emerald-100/80 ml-1">
+                  {mode === "admin" ? "اسم المستخدم" : "رقم الهاتف"}
+                </label>
                 <div className="relative">
                   <Phone className="w-4 h-4 absolute right-3 top-3.5 text-muted-foreground" />
                   <input 
                     required
-                    type="tel" 
+                    type={mode === "admin" ? "text" : "tel"}
                     dir="ltr"
                     value={formData.phone}
                     onChange={e => setFormData({...formData, phone: e.target.value})}
                     className="w-full bg-input/50 border border-white/5 rounded-xl py-3 pr-10 pl-4 text-emerald-50 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-right" 
-                    placeholder="05xxxxxxxx" 
+                    placeholder={mode === "admin" ? "admin" : "05xxxxxxxx"}
                   />
                 </div>
               </div>
