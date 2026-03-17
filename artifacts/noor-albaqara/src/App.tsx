@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import AuthPage from "./pages/auth/AuthPage";
 import StudentDashboard from "./pages/student/Dashboard";
 import MemorizePage from "./pages/student/Memorize";
+import HashdPage from "./pages/student/Hashd";
 import SupervisorDashboard from "./pages/supervisor/Dashboard";
 import AdminDashboard from "./pages/admin/Dashboard";
 import NotFound from "@/pages/not-found";
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/" component={AuthPage} />
       <Route path="/dashboard" component={StudentDashboard} />
       <Route path="/memorize" component={MemorizePage} />
+      <Route path="/hashd" component={HashdPage} />
       <Route path="/supervisor" component={SupervisorDashboard} />
       <Route path="/admin" component={AdminDashboard} />
       <Route component={NotFound} />
