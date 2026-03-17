@@ -31,6 +31,13 @@ export default function MemorizePage() {
   const pageNum = currentWajh + 1;
   const { ayahs, loading: pageLoading, error: pageError } = useQuranPage(pageNum);
 
+  // إذا كان الطالب في وضع "انتظار المعلم" → أظهر نافذة التأكيد مباشرة
+  useEffect(() => {
+    if (progress?.waitingTeacher) {
+      setShowTeacherModal(true);
+    }
+  }, [progress?.waitingTeacher]);
+
   // Auto-stop at 90 seconds
   useEffect(() => {
     if (isRecording && recordingTime >= 90) handleStopRecord();
