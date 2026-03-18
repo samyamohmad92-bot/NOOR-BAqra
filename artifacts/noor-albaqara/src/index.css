@@ -131,4 +131,48 @@
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-muted-foreground;
   }
+  /* تنسيق زر التسميع المباشر */
+  .zoom-fab {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: linear-gradient(135deg, #2D8CFF 0%, #0E71EB 100%);
+      color: white !important;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      padding: 12px 24px;
+      border-radius: 50px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      transition: all 0.3s ease;
+      direction: rtl;
+  }
+
+  .zoom-fab:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(45, 140, 255, 0.4);
+  }
+
+  .zoom-icon-wrapper {
+      display: flex;
+      margin-left: 10px;
+  }
+
+  .zoom-text {
+      font-family: 'Tajawal', sans-serif; /* استخدمت خط Tajawal الموجود في ملفك */
+      font-weight: bold;
+      font-size: 15px;
+  }
+
+  /* تحسين المظهر للجوال */
+  @media (max-width: 600px) {
+      .zoom-text { display: none; }
+      .zoom-fab { 
+          padding: 15px; 
+          border-radius: 50%; 
+          bottom: 20px; 
+          right: 20px; 
+      }
+  }
 }
