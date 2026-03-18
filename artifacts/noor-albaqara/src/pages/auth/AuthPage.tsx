@@ -106,7 +106,7 @@ export default function AuthPage() {
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-emerald-800 flex items-center justify-center shadow-xl shadow-primary/20 mb-6 mx-auto md:mx-0">
               <BookOpen className="w-7 h-7 text-primary-foreground" />
             </div>
-            <h1 className="font-serif text-3xl font-bold text-emerald-50 mb-2">نور البقرة</h1>
+            <h1 className="font-serif text-3xl font-bold text-emerald-50 mb-2">نور البقرة _ أكاديمية العروة الوثقى</h1>
             <p className="text-muted-foreground">منصة الحفظ المتقن لسورة البقرة</p>
           </div>
 

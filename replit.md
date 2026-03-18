@@ -1,4 +1,4 @@
-# نور البقرة — Noor Al-Baqara
+# نور البقرة_ أكاديمية العروة الوثقى — Noor Al-Baqara
 
 ## Overview
 

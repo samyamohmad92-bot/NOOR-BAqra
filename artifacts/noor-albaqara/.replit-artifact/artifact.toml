@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "نور البقرة"
+title = "نور البقرة _ أكاديمية العروة الوثقى"
 version = "1.0.0"
 id = "artifacts/noor-albaqara"
 router = "path"
