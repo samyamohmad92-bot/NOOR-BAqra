@@ -289,6 +289,15 @@ export default function MemorizePage() {
             ) : (
               "سمّع على معلمك للانتقال للوجه التالي."
             )}
+            <br /><br />
+
+            <a href="https://us02web.zoom.us/j/83343336352?pwd=bWkeaD8czSGVksZKQok1AQpYdkKeNa.1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 underline font-bold"
+            >
+              📹 انقر هنا للانضمام لغرفة الزوم والتسميع على المعلم
+            </a>
           </p>
           <div className="flex flex-col gap-3">
             <button
